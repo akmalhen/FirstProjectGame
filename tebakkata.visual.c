@@ -5,9 +5,7 @@
 #include <time.h>
 #include <ctype.h>
 
-#if defined(PLATFORM_WEB)
-    #include <emscripten/emscripten.h>
-#endif
+
 
 //----------------------------------------------------------------------------------
 // Defines and Macros
@@ -98,15 +96,10 @@ int main(void)
 
     InitGame(false);
 
-#if defined(PLATFORM_WEB)
-    emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
-#else
     SetTargetFPS(60);
-    while (!WindowShouldClose())
-    {
+    while (!WindowShouldClose()) {
         UpdateDrawFrame();
     }
-#endif
 
     UnloadGame();
     CloseWindow();
@@ -164,7 +157,7 @@ void UpdateGame(void)
     if (currentScreen == SCREEN_MODE_SELECT) {
         const char *item1Text = "1. Single Player";
         const char *item2Text = "2. Multi Player";
-        const char *item3Text = "3. Back";
+        const char *item3Text = "3. Quit";
 
         Vector2 item1Size = MeasureTextEx(gameFont, item1Text, 24, 1);
         Vector2 item2Size = MeasureTextEx(gameFont, item2Text, 24, 1);
@@ -221,12 +214,17 @@ void UpdateGame(void)
                     isMultiplayer = true;
                     currentScreen = SCREEN_INSTRUCTIONS_MP;
                 } else if (CheckCollisionPointRec(GetMousePosition(), backToTitleButtonRect)) {
-                    currentScreen = SCREEN_TITLE;
+                    CloseWindow(); // keluar dari game
+                    exit(0);
                 }
+
             }
             if (IsKeyPressed(KEY_ONE)) { isMultiplayer = false; currentScreen = SCREEN_INSTRUCTIONS_SP; }
             else if (IsKeyPressed(KEY_TWO)) { isMultiplayer = true; currentScreen = SCREEN_INSTRUCTIONS_MP; }
-            else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_ESCAPE)) { currentScreen = SCREEN_TITLE; }
+            else if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_ESCAPE)) {
+                CloseWindow();
+                exit(0);
+            }
         } break;
         case SCREEN_INSTRUCTIONS_SP: {
              if (IsKeyPressed(KEY_ENTER) || (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), startButtonRect)) ) {
@@ -348,7 +346,7 @@ void DrawGame(void)
             DrawTextEx(gameFont, "2. Multi Player", (Vector2){ multiPlayerButtonRect.x + buttonTextPadding, multiPlayerButtonRect.y + buttonTextPadding }, 24, 1, DARKGRAY);
 
             DrawRectangleRec(backToTitleButtonRect, CheckCollisionPointRec(GetMousePosition(), backToTitleButtonRect) ? LIGHTGRAY : BLANK);
-            DrawTextEx(gameFont, "3. Back", (Vector2){ backToTitleButtonRect.x + buttonTextPadding, backToTitleButtonRect.y + buttonTextPadding }, 24, 1, DARKGRAY);
+            DrawTextEx(gameFont, "3. Quit", (Vector2){ backToTitleButtonRect.x + buttonTextPadding, backToTitleButtonRect.y + buttonTextPadding }, 24, 1, DARKGRAY);
         } break;
         case SCREEN_INSTRUCTIONS_SP: {
             DrawTextEx(gameFont, "Single Player Instructions", (Vector2){50, 50}, 30, 1, BLACK);
@@ -463,5 +461,5 @@ void UpdateDrawFrame(void) {
     DrawGame();
 }
 
-//    gcc tebakkata_raylib.c -o tebak_kata_game $(pkg-config --cflags --libs raylib)
+//    gcc tebakkata_visual.c -o tebak_kata_game $(pkg-config --cflags --libs raylib)
 //    ./tebak_kata_game
