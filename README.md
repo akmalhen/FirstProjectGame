@@ -1,8 +1,14 @@
-# Guess the Word Visual Game (Hangman)
+# Guess the Word – Hangman Game
 
-Guess the Word is a simple Hangman game themed **animal names**, made using **C and Raylib**. This game supports **Single Player** and **local Multiplayer**.
+Guess the Word is a Hangman-style word guessing game themed around animal names. This project comes with two versions:
 
-## Screenshots
+🖼️ Visual Version using C + Raylib
+
+💻 Console Version using standard C
+
+You can play in Single Player (with random animal names) or Multiplayer (one player inputs a word, the other guesses it).
+
+## Screenshots (Visual Version)
 
 | Start Screen | Mode Selection | Single Player Instructions |
 |--------------|----------------|-----------------------------|
@@ -10,21 +16,34 @@ Guess the Word is a simple Hangman game themed **animal names**, made using **C 
 
 | Multiplayer Instructions | Multiplayer Input | Gameplay |
 |--------------------|-------------------|---------------|
-| ![](screenshots/multiplayer_input.png) | ![](screenshots/singleplayer_guess.png) |
+| ![](screenshots/multiplayer_instructions.png) | ![](screenshots/multiplayer_input.png) | ![](screenshots/multiplayer_guess.png)
 
 ---
 
-## Compile & Run
+## Game Modes
 
-### Linux / macOS
+🧍 Single Player
+Guess random animal-themed words with up to 6 wrong attempts.
 
+👥 Multiplayer
+Player 1 inputs a word (kept secret), and Player 2 tries to guess it.
+
+## How to Compile & Run
+
+- Visual Version (Raylib GUI)
+Linux / macOS
 ```bash
 gcc guessword.visual.c -o guess_word_game $(pkg-config --cflags --libs raylib)
 ./guess_word_game
 ```
+Windows (MSYS2)
+bash
+Copy
+Edit
+gcc tebakkata.visual.c -o guess_word_game -lraylib -lopengl32 -lgdi32 -lwinmm
 
-### Windows (MSYS2)
-
+- Console Version (Non-GUI)
+All Platforms (with GCC)
 ```bash
 gcc guessword.visual.c -o guess_word_game -lraylib -lopengl32 -lgdi32 -lwinmm
 ```
@@ -34,8 +53,8 @@ gcc guessword.visual.c -o guess_word_game -lraylib -lopengl32 -lgdi32 -lwinmm
 1. **Start Screen**
 2. **Mode Selection**
 Select:
-- 1 Single Player → guess random animal-themed words
-- 2️ Multiplayer → Player 1 enters a word, Player 2 guesses
+- Single Player → guess random animal-themed words
+- Multiplayer → Player 1 enters a word, Player 2 guesses
 3. **Instructions**
 4. **Gameplay**
 Guess the letters A–Z. Maximum 6 errors.
@@ -44,33 +63,52 @@ Guess the letters A–Z. Maximum 6 errors.
 - Lose: hangman finished drawing
 
 ## Features
+**Both Versions**
+- Single Player: Random animal-themed words
 
-Single Player with random animal-themed words
+- Multiplayer: Manual word entry
 
-Multiplayer: manual word input by Player 1
+- Max 6 incorrect guesses
 
-Full hangman visualization
+- Case-insensitive guessing
 
-Interactive GUI with Raylib
+- Replayable after win/loss
 
-Keyboard and mouse support
+**Visual Version (Raylib)**
+- GUI with keyboard/mouse support
 
-Screen view between stages
+- Full Hangman drawing visualization
+
+- Custom font support (resources/custom_font.ttf)
+
+- Smooth screen transitions
+
+**Console Version**
+- Fully playable in terminal
+
+- Clear screen transitions and structured menus
+
+- Display of remaining lives with symbols
+
+
 
 ## Project Structure
 
 ```
 .
-├── guessword.visual.c # Main source code
-├── screenshots/ # Folder containing game screenshots
-│ ├── start.png
-│ ├── mode.png
-│ ├── singleplayer_instructions.png
-│ ├── singleplayer_guess.png
-│ ├── multiplayer_instructions.png
-│ └── multiplayer_input.png
-├── .gitignore
+├── tebakkata.c              # Console version (terminal-based)
+├── tebakkata.visual.c       # Visual version using Raylib
+├── screenshots/             # Game screenshots
+│   ├── start.png
+│   ├── mode.png
+│   ├── singleplayer_instructions.png
+│   ├── singleplayer_guess.png
+│   ├── multiplayer_instructions.png
+│   └── multiplayer_input.png
+├── resources/
+│   └── custom_font.ttf      # (Optional) Custom font for visual version
 └── README.md
+
 ```
 
 ## Font
@@ -88,7 +126,14 @@ If not available, it will be automatic fallback to Raylib's default font.
 - [Raylib](https://www.raylib.com/)
 - C Compiler (GCC/Clang)
 
-### Raylib Installation
+**For Visual Version**
+- Raylib
+- C Compiler (GCC / Clang)
+
+**For Console Version**
+- C Compiler (GCC / Clang)
+
+## Raylib Installation
 
 **macOS:**
 
@@ -100,6 +145,11 @@ brew install raylib
 
 ```bash
 sudo apt install libraylib-dev
+```
+**Windows (MSYS2):**
+
+```bash
+pacman -S mingw-w64-x86_64-raylib
 ```
 
 ## Notes
